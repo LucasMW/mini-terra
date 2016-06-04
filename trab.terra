@@ -1,0 +1,70 @@
+#include "/home/terra/TerraNG/terra/TerraNet.defs"
+
+var ushort nodeId = getNodeId(); // get this node ID
+pktype usrMsg from radioMsg with
+	var ubyte[4] d8;
+	var ushort[4] d16; //envia a temperatura
+	var ulong[2]  d32;
+end
+
+var ushort pai;
+var usrMsg sndData;
+var usrMsg recData;
+sndData.type=1;
+sndData.target = BROADCAST;
+sndData.source = nodeId;
+pai = 0;
+
+if nodeId == 11 then
+	loop do
+		//emit LED0(ON);	
+		recData = await RECEIVE; //receber mensagens do resto do pessoal
+		//emit LED0(OFF);
+		sndData.d16[0] = recData.d16[0]; // vai transmitir o que recebeu
+		//emit LED1(ON);
+		emit SEND(sndData); // transmite
+		await SEND_DONE; // espera terminar a mensagem
+		//emit LED1(OFF);
+	end
+else	// 
+	par/or do // medir e transmitir temperatura
+		loop do
+			//emit LED0(ON);			
+			emit REQ_TEMP();
+			sndData.d16[0] = await TEMP; // Lê a temperatura
+			//emit LED0(OFF);
+			//emit LED1(ON);
+			emit SEND(sndData); //envia a temperatura
+			await SEND_DONE;
+			//emit LED1(OFF);
+			//await 5s;
+		end
+	with 
+		loop do
+			//emit LED2(ON);
+			recData = await RECEIVE;
+			//emit LED2(OFF);
+			if recData.type == 1 then // se a mensagem for do tipo 1
+				if pai == 0 then // se o pai não tá prenchido
+					pai = recData.source; 
+				end
+				//repassa o broadcast
+				sndData.d16[0] = recData.d16[0];
+				sndData.type = 1;  // envia uma mensagem do tipo 1
+				sndData.target = BROADCAST;
+				//emit LED2(ON);			
+				emit SEND(sndData);
+				await SEND_DONE;
+				//emit LED2(OFF);
+			else  // não é tipo 1
+				sndData.d16[0] = recData.d16[0];
+				sndData.type = 2;
+				sndData.target = pai;
+				//emit LED1(ON);			
+				emit SEND(sndData);
+				await SEND_DONE;
+				//emit LED1(OFF);
+			end
+		end
+	end
+end
