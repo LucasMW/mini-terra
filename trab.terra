@@ -10,61 +10,63 @@ end
 var ushort pai;
 var usrMsg sndData;
 var usrMsg recData;
+
+var ubyte state; // state of the node. 1 is evaluating paths. 2 is acquiring temperature
+state = 1; // it starts that way
+
 sndData.type=1;
 sndData.target = BROADCAST;
 sndData.source = nodeId;
 pai = 0;
 
+
+// Sub pai de todos
 if nodeId == 11 then
-	loop do
-		//emit LED0(ON);	
+	pai = 1; 
+	loop do	
 		recData = await RECEIVE; //receber mensagens do resto do pessoal
-		//emit LED0(OFF);
 		sndData.d16[0] = recData.d16[0]; // vai transmitir o que recebeu
-		//emit LED1(ON);
+		sndData.target = pai; // father of all
 		emit SEND(sndData); // transmite
 		await SEND_DONE; // espera terminar a mensagem
-		//emit LED1(OFF);
 	end
-else	// 
-	par/or do // medir e transmitir temperatura
-		loop do
-			//emit LED0(ON);			
-			emit REQ_TEMP();
-			sndData.d16[0] = await TEMP; // Lê a temperatura
-			//emit LED0(OFF);
-			//emit LED1(ON);
-			emit SEND(sndData); //envia a temperatura
-			await SEND_DONE;
-			//emit LED1(OFF);
-			//await 5s;
-		end
-	with 
-		loop do
-			//emit LED2(ON);
-			recData = await RECEIVE;
-			//emit LED2(OFF);
-			if recData.type == 1 then // se a mensagem for do tipo 1
-				if pai == 0 then // se o pai não tá prenchido
-					pai = recData.source; 
-				end
-				//repassa o broadcast
-				sndData.d16[0] = recData.d16[0];
-				sndData.type = 1;  // envia uma mensagem do tipo 1
-				sndData.target = BROADCAST;
-				//emit LED2(ON);			
-				emit SEND(sndData);
+else	
+	if state == 2 then// i.e já sabe quem é o pai
+		par/or do
+			loop do			
+				emit REQ_TEMP();
+				sndData.d16[0] = await TEMP; // Lê a temperatura
+				sndData.target = pai; // envia-se a temperatura ao pai
+				emit SEND(sndData); //envia a temperatura
 				await SEND_DONE;
-				//emit LED2(OFF);
-			else  // não é tipo 1
-				sndData.d16[0] = recData.d16[0];
-				sndData.type = 2;
+			end
+		with
+			loop do
+				recData = await RECEIVE; 
+				sndData.d16[1] = recData.d16[1];
+				sndData.type = 1;
 				sndData.target = pai;
-				//emit LED1(ON);			
 				emit SEND(sndData);
 				await SEND_DONE;
-				//emit LED1(OFF);
+			end
+		with
+			await 10 s; //timeout. can be any finish event
+		end
+	else
+		if state == 1 then
+			recData = await RECEIVE;
+			if recData.type == 2 then
+				if pai == 0 then
+					pai = recData.source;
+					state = 2; // descobriu o pai
+				end	
+				sndData.d16[0] = recData.d16[0];
+				sndData.type = 2; 
+				sndData.target = BROADCAST;			
+				emit SEND(sndData);
+				await SEND_DONE;
 			end
 		end
 	end
 end
+		
