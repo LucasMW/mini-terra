@@ -40,10 +40,13 @@ if nodeId == 11 then
 			recData = await RECEIVE; //receber mensagens do resto do pessoal
 			sndData.d16[0] = recData.d16[0];
 			sndData.d16[1] = recData.d16[1]; // vai transmitir o que recebeu
+			sndData.d16[3] = recData.source;
 			sndData.target = pai; // father of all
 			sndData.type = 1;
+			sndData.source = nodeId;
+			emit SEND(sndData);
 			emit LED1(ON);
-			await 10s;
+			await 1s;
 			emit LED1(OFF);
 		end
 	end
@@ -116,7 +119,7 @@ else
 				sndData.target = BROADCAST;			
 				emit SEND(sndData);
 				await SEND_DONE;
-				await 5 s;
+				await 2s;
 			end
 			end
 		end
