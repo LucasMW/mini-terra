@@ -11,10 +11,11 @@ var ushort pai;
 var usrMsg sndData;
 var usrMsg recData;
 
+
 var ubyte state; // state of the node. 1 is evaluating paths. 2 is acquiring temperature
 state = 1; // it starts that way
 
-sndData.type=1;
+
 sndData.target = BROADCAST;
 sndData.source = nodeId;
 pai = 0;
@@ -23,15 +24,26 @@ pai = 0;
 // Sub pai de todos
 if nodeId == 11 then
 	pai = 1; 
-	loop do	
-		recData = await RECEIVE; //receber mensagens do resto do pessoal
-		sndData.d16[0] = recData.d16[0]; // vai transmitir o que recebeu
-		sndData.target = pai; // father of all
-		emit SEND(sndData); // transmite
-		await SEND_DONE; // espera terminar a mensagem
+	emit LED0(ON);
+	if state == 1 then
+		loop do
+		sndData.type = 2;
+		emit SEND(sndData);
+		await SEND_DONE;
+		end
+	else
+		loop do	
+			recData = await RECEIVE; //receber mensagens do resto do pessoal
+			sndData.d16[0] = recData.d16[0]; // vai transmitir o que recebeu
+			sndData.target = pai; // father of all
+			emit SEND(sndData); // transmite
+			await SEND_DONE; // espera terminar a mensagem
+		end
 	end
 else	
+	loop do
 	if state == 2 then// i.e já sabe quem é o pai
+		emit LED2(ON);
 		par/or do
 			loop do			
 				emit REQ_TEMP();
@@ -49,24 +61,32 @@ else
 				emit SEND(sndData);
 				await SEND_DONE;
 			end
-		with
-			await 10 s; //timeout. can be any finish event
+		//with
+			//emit LED0(ON);
+			//await 100 s; //timeout. can be any finish event
+			//emit LED0(OFF);
 		end
 	else
 		if state == 1 then
+			emit LED1(ON);
 			recData = await RECEIVE;
 			if recData.type == 2 then
 				if pai == 0 then
 					pai = recData.source;
 					state = 2; // descobriu o pai
+					emit LED2(ON);
 				end	
 				sndData.d16[0] = recData.d16[0];
 				sndData.type = 2; 
 				sndData.target = BROADCAST;			
 				emit SEND(sndData);
 				await SEND_DONE;
+				await 15 s;
 			end
 		end
+	end
+		emit LED2(ON);
+		await 1s;
 	end
 end
 		
