@@ -43,7 +43,7 @@ if nodeId == 11 then
 			sndData.d16[3] = recData.source;
 			sndData.target = pai; // father of all
 			sndData.type = 1;
-			sndData.source = nodeId;
+			sndData.source = recData.source; // overwrite source
 			emit SEND(sndData);
 			emit LED1(ON);
 			await 1s;
