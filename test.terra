@@ -1,0 +1,89 @@
+#include "/home/terra/TerraNG/terra/TerraNet.defs"
+
+
+pktype myMsg from radioMsg with
+	var ubyte[4] d8;
+	var ushort[4] d16; //envia a temperatura
+	var ulong[2]  d32;
+end
+
+var ushort pai;
+var ushort myID = getNodeId(); // get this node ID
+
+emit LED0(OFF);
+emit LED1(OFF);
+emit LED2(OFF);
+
+if myID == 11 then
+		await 1s; 
+		var myMsg msg;
+		msg.type = 2;
+		msg.target = BROADCAST;
+		msg.source = myID;
+		emit SEND(msg);
+		await SEND_DONE;
+		
+		pai = 1;
+		par/or do
+			loop do
+				var myMsg receivedMsg;
+				receivedMsg = await RECEIVE(1); //receber mensagens de temperatura (tipo 1)
+				receivedMsg.target = pai; // father of all
+				receivedMsg.type = 1;
+				emit SEND(receivedMsg);
+				await SEND_DONE;
+			end
+		with
+			loop do
+				await 1s;
+				emit LED1(ON);
+				await 1s;
+				emit LED1(OFF);
+			end
+		end
+else
+	var myMsg myFatherMsg;
+	myFatherMsg = await RECEIVE(2);
+	if pai == 0 then
+		pai = myFatherMsg.source;
+	end
+	var myMsg msg;
+		msg.type = 2;
+		msg.target = BROADCAST;
+		msg.source = myID;
+		emit SEND(msg);
+		await SEND_DONE;
+
+	par/or do
+		loop do
+				var myMsg receivedMsg;
+				receivedMsg = await RECEIVE(1); //receber mensagens de temperatura (tipo 1)
+				receivedMsg.target = pai;
+				receivedMsg.type = 1;
+				receivedMsg.d16[1] = receivedMsg.source;
+				emit SEND(receivedMsg);
+				await SEND_DONE;
+		end
+	with	
+		loop do 
+			var myMsg tempMsg;
+			emit REQ_TEMP();
+			tempMsg.d16[0] = await TEMP; // Lê a temperatura
+			tempMsg.source = myID;
+			tempMsg.target = pai;
+			tempMsg.type = 1;
+			emit SEND(tempMsg);
+			await SEND_DONE;
+			var ubyte rng = random();
+			await (rng) ms;
+		end
+	with
+		loop do
+				await 1s;
+				emit LED1(ON);
+				await 1s;
+				emit LED1(OFF);
+		end
+	end
+	
+end
