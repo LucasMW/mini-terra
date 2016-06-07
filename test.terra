@@ -66,6 +66,7 @@ else
 		end
 	with	
 		loop do 
+			await 1s; // não precisa medir toda hora
 			var myMsg tempMsg;
 			emit REQ_TEMP();
 			tempMsg.d16[0] = await TEMP; // Lê a temperatura
