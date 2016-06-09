@@ -65,11 +65,14 @@ else
 				await SEND_DONE;
 		end
 	with	
+		var ubyte tempCont=0;
 		loop do 
 			await 1s; // não precisa medir toda hora
 			var myMsg tempMsg;
 			emit REQ_TEMP();
 			tempMsg.d16[0] = await TEMP; // Lê a temperatura
+			inc tempCont; //incrementa tempCont
+			tempMsg.d8[0] = tempCont;
 			tempMsg.source = myID;
 			tempMsg.target = pai;
 			tempMsg.type = 1;
