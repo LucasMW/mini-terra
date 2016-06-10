@@ -66,6 +66,7 @@ else
 		end
 	with	
 		var ubyte tempCont=0;
+		var ushort msgRandMax = 3000; //3 seconds
 		loop do 
 			await 1s; // não precisa medir toda hora
 			var myMsg tempMsg;
@@ -78,7 +79,7 @@ else
 			tempMsg.type = 1;
 			emit SEND(tempMsg);
 			await SEND_DONE;
-			var ubyte rng = random();
+			var ushort rng = random() % msgRandMax;
 			await (rng) ms;
 		end
 	with
