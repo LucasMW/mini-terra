@@ -1,131 +1,95 @@
 #include "/home/terra/TerraNG/terra/TerraNet.defs"
 
-var ushort nodeId = getNodeId(); // get this node ID
-pktype usrMsg from radioMsg with
+
+pktype myMsg from radioMsg with
 	var ubyte[4] d8;
 	var ushort[4] d16; //envia a temperatura
 	var ulong[2]  d32;
 end
 
 var ushort pai;
-var usrMsg sndData;
-var usrMsg recData;
-
-
-var ubyte state; // state of the node. 1 is evaluating paths. 2 is acquiring temperature
-state = 1; // it starts that way
-
-
-sndData.target = BROADCAST;
-sndData.source = nodeId;
-pai = 0;
+var ushort myID = getNodeId(); // get this node ID
 
 emit LED0(OFF);
 emit LED1(OFF);
 emit LED2(OFF);
 
-// Sub pai de todos
-if nodeId == 11 then
-	pai = 1; 
-	emit LED0(ON);
-	loop do
-	if state == 1 then
-		sndData.type = 2;
-		sndData.target = BROADCAST;
-		emit SEND(sndData);
+if myID == 11 then
+		await 1s; 
+		var myMsg msg;
+		msg.type = 2;
+		msg.target = BROADCAST;
+		msg.source = myID;
+		emit SEND(msg);
 		await SEND_DONE;
-		state = 2;
-	else
-		loop do	
-			recData = await RECEIVE; //receber mensagens do resto do pessoal
-			sndData.d16[0] = recData.d16[0];
-			sndData.d16[1] = recData.d16[1]; // vai transmitir o que recebeu
-			sndData.d16[3] = recData.source;
-			sndData.target = pai; // father of all
-			sndData.type = 1;
-			sndData.source = recData.source; // overwrite source
-			emit SEND(sndData);
-			emit LED1(ON);
-			await 1s;
-			emit LED1(OFF);
-		end
-	end
-	await 10s;
-	emit LED0(OFF);
-	end
-else	
-	loop do
-	if state == 2 then// i.e já sabe quem é o pai
-		emit LED2(ON);
-		//debug block
+		
+		pai = 1;
 		par/or do
-		loop do	
+			loop do
+				var myMsg receivedMsg;
+				receivedMsg = await RECEIVE(1); //receber mensagens de temperatura (tipo 1)
+				receivedMsg.target = pai; // father of all
+				receivedMsg.type = 1;
+				emit SEND(receivedMsg);
+				await SEND_DONE;
+			end
+		with
+			loop do
+				await 1s;
 				emit LED1(ON);
 				await 1s;
 				emit LED1(OFF);
-				await 1s;
-		end
-		with
-			emit LED0(ON);
-				await 1s ;		
-				emit LED0(OFF); 
-				emit REQ_TEMP();
-				sndData.d16[0] = await TEMP; // Lê a temperatura
-				emit LED0(OFF);
-				sndData.target = pai; // envia-se a temperatura ao pai
-				//emit LED1(ON);		
-				sndData.target = pai;
-				emit SEND(sndData);
-				await SEND_DONE;
-				await 1s;
-				recData = await RECEIVE;
-				sndData.d16[1] = recData.d16[1];
-				sndData.type = 1; 
-				//emit LED1(OFF);
-				emit SEND(sndData);
-				await SEND_DONE;
-		with
-				loop do
-					par/or do
-						await 10s;
-					with
-						loop do
-							await 1s;
-							emit SEND(sndData);
-						end
-					end
-				end
-		end
-		//end of debug block
-		//with
-			//emit LED0(ON);
-			//await 100 s; //timeout. can be any finish event
-			//emit LED0(OFF);
-	else
-		if state == 1 then
-			emit LED1(ON);
-			loop do
-			recData = await RECEIVE;
-			if recData.type == 2 then
-				if pai == 0 then
-					pai = recData.source;
-					state = 2; // descobriu o pai
-					emit LED2(ON);
-					emit LED1(OFF);
-					break;
-				end	
-				sndData.d16[0] = recData.d16[0];
-				sndData.type = 2; 
-				sndData.target = BROADCAST;			
-				emit SEND(sndData);
-				await SEND_DONE;
-				await 2s;
-			end
 			end
 		end
+else
+	var myMsg myFatherMsg;
+	myFatherMsg = await RECEIVE(2);
+	if pai == 0 then
+		pai = myFatherMsg.source;
 	end
-		emit LED2(ON);
-		await 1s;
+	var myMsg msg;
+		msg.type = 2;
+		msg.target = BROADCAST;
+		msg.source = myID;
+		emit SEND(msg);
+		await SEND_DONE;
+
+	par/or do
+		loop do
+				var myMsg receivedMsg;
+				receivedMsg = await RECEIVE(1); //receber mensagens de temperatura (tipo 1)
+				receivedMsg.target = pai;
+				receivedMsg.type = 1;
+				receivedMsg.d16[1] = receivedMsg.source;
+				emit SEND(receivedMsg);
+				await SEND_DONE;
+		end
+	with	
+		var ubyte tempCont=0;
+		var ushort msgRandMax = 3000; //3 seconds
+		var ubyte waitTime = msgRandMax/1000 +1;
+		loop do 
+			await (waitTime)s; // não precisa medir toda hora
+			var myMsg tempMsg;
+			emit REQ_TEMP();
+			tempMsg.d16[0] = await TEMP; // Lê a temperatura
+			inc tempCont; //incrementa tempCont
+			tempMsg.d8[0] = tempCont;
+			tempMsg.source = myID;
+			tempMsg.target = pai;
+			tempMsg.type = 1;
+			emit SEND(tempMsg);
+			await SEND_DONE;
+			var ushort rng = random() % msgRandMax;
+			await (rng) ms;
+		end
+	with
+		loop do
+				await 1s;
+				emit LED1(ON);
+				await 1s;
+				emit LED1(OFF);
+		end
 	end
+	
 end
-		
