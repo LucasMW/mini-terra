@@ -61,8 +61,8 @@ else
 				receivedMsg.target = pai;
 				receivedMsg.type = 1;
 				receivedMsg.d16[1] = receivedMsg.source;
-				emit SEND(receivedMsg);
-				await SEND_DONE;
+				emit SEND_ACK(receivedMsg);
+				await SEND_DONE_ACK;
 		end
 	with	
 		var ubyte tempCont=0;
@@ -78,8 +78,8 @@ else
 			tempMsg.source = myID;
 			tempMsg.target = pai;
 			tempMsg.type = 1;
-			emit SEND(tempMsg);
-			await SEND_DONE;
+			emit SEND_ACK(tempMsg);
+			await SEND_DONE_ACK;
 			var ushort rng = random() % msgRandMax;
 			await (rng) ms;
 		end

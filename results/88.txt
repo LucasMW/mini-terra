@@ -1,0 +1,198 @@
+/home/terra/TerraNG/sim/Net
+<<: init 3 3 20 :>>
+<<: start 1 0 0 :>>
+<<: start 11 0 0 :>>
+<<: start 12 0 0 :>>
+<<: start 13 0 0 :>>
+<<: start 21 0 0 :>>
+<<: start 22 0 0 :>>
+<<: start 23 0 0 :>>
+<<: start 31 0 0 :>>
+<<: start 32 0 0 :>>
+<<: start 33 0 0 :>>
+DEBUG (31): <<: radio 31 65535 0 :>>
+DEBUG (22): <<: radio 22 65535 0 :>>
+clients 1, read 0, wrote 0
+clients 0, read 0, wrote 0
+DEBUG (13): <<: radio 13 65535 0 :>>
+DEBUG (11): <<: radio 11 65535 0 :>>
+DEBUG (32): <<: radio 32 65535 0 :>>
+DEBUG (23): <<: radio 23 65535 0 :>>
+DEBUG (21): <<: radio 21 65535 0 :>>
+DEBUG (12): <<: radio 12 65535 0 :>>
+DEBUG (33): <<: radio 33 65535 0 :>>
+<<: clock 0 100 0 :>>
+DEBUG (1): <<: serial 1 0 0 :>>
+<<: clock 0 200 0 :>>
+<<: clock 0 300 0 :>>
+<<: clock 0 400 0 :>>
+<<: clock 0 500 0 :>>
+<<: clock 0 600 0 :>>
+<<: clock 0 700 0 :>>
+DEBUG (31): <<: radio 31 65535 0 :>>
+DEBUG (22): <<: radio 22 65535 0 :>>
+DEBUG (13): <<: radio 13 65535 0 :>>
+DEBUG (11): <<: radio 11 65535 0 :>>
+DEBUG (32): <<: radio 32 65535 0 :>>
+DEBUG (23): <<: radio 23 65535 0 :>>
+DEBUG (21): <<: radio 21 65535 0 :>>
+DEBUG (12): <<: radio 12 65535 0 :>>
+<<: clock 0 800 0 :>>
+DEBUG (33): <<: radio 33 65535 0 :>>
+DEBUG (1): <<: serial 1 0 0 :>>
+<<: clock 0 900 0 :>>
+clients 1, read 0, wrote 0
+<<: clock 0 1000 0 :>>
+<<: clock 0 1100 0 :>>
+<<: clock 0 1200 0 :>>
+<<: clock 0 1300 0 :>>
+<<: clock 0 1400 0 :>>
+DEBUG (31): <<: radio 31 65535 0 :>>
+DEBUG (22): <<: radio 22 65535 0 :>>
+DEBUG (13): <<: radio 13 65535 0 :>>
+<<: clock 0 1500 0 :>>
+DEBUG (11): <<: radio 11 65535 0 :>>
+DEBUG (32): <<: radio 32 65535 0 :>>
+DEBUG (23): <<: radio 23 65535 0 :>>
+DEBUG (21): <<: radio 21 65535 0 :>>
+DEBUG (12): <<: radio 12 65535 0 :>>
+DEBUG (33): <<: radio 33 65535 0 :>>
+DEBUG (1): <<: serial 1 0 0 :>>
+<<: clock 0 1600 0 :>>
+<<: clock 0 1700 0 :>>
+<<: clock 0 1800 0 :>>
+<<: clock 0 1900 0 :>>
+DEBUG (1): <<: serial 1 1 0 :>>
+DEBUG (1): <<: radio 1 65535 0 :>>
+<<: clock 0 2000 0 :>>
+DEBUG (11): <<: vmstop 11 0 0 :>>
+DEBUG (11): <<: radio 11 1 0 :>>
+<<: clock 0 2100 0 :>>
+DEBUG (1): <<: serial 1 0 0 :>>
+DEBUG (31): <<: radio 31 65535 0 :>>
+DEBUG (22): <<: radio 22 65535 0 :>>
+DEBUG (13): <<: radio 13 65535 0 :>>
+<<: clock 0 2200 0 :>>
+DEBUG (32): <<: radio 32 65535 0 :>>
+DEBUG (23): <<: radio 23 65535 0 :>>
+DEBUG (21): <<: radio 21 65535 0 :>>
+DEBUG (12): <<: radio 12 65535 0 :>>
+DEBUG (33): <<: radio 33 65535 0 :>>
+<<: clock 0 2300 0 :>>
+<<: clock 0 2400 0 :>>
+<<: clock 0 2500 0 :>>
+<<: clock 0 2600 0 :>>
+<<: clock 0 2700 0 :>>
+DEBUG (11): <<: radio 11 1 0 :>>
+DEBUG (1): <<: serial 1 1 0 :>>
+<<: clock 0 2800 0 :>>
+DEBUG (1): <<: serial 1 0 0 :>>
+DEBUG (1): <<: serial 1 1 0 :>>
+DEBUG (1): <<: radio 1 65535 0 :>>
+<<: clock 0 2900 0 :>>
+DEBUG (11): <<: radio 11 65535 0 :>>
+DEBUG (22): <<: vmstop 22 0 0 :>>
+DEBUG (21): <<: vmstop 21 0 0 :>>
+DEBUG (12): <<: vmstop 12 0 0 :>>
+DEBUG (22): <<: radio 22 11 0 :>>
+DEBUG (11): <<: radio 11 65535 0 :>>
+<<: clock 0 3000 0 :>>
+DEBUG (21): <<: radio 21 11 0 :>>
+DEBUG (22): <<: radio 22 65535 0 :>>
+DEBUG (12): <<: radio 12 11 0 :>>
+DEBUG (23): <<: vmstop 23 0 0 :>>
+DEBUG (13): <<: vmstop 13 0 0 :>>
+DEBUG (33): <<: vmstop 33 0 0 :>>
+DEBUG (31): <<: vmstop 31 0 0 :>>
+DEBUG (32): <<: vmstop 32 0 0 :>>
+DEBUG (1): <<: serial 1 0 0 :>>
+DEBUG (31): <<: radio 31 22 0 :>>
+DEBUG (22): <<: radio 22 65535 0 :>>
+DEBUG (13): <<: radio 13 22 0 :>>
+DEBUG (31): <<: radio 31 65535 0 :>>
+DEBUG (32): <<: radio 32 22 0 :>>
+DEBUG (23): <<: radio 23 22 0 :>>
+DEBUG (13): <<: radio 13 65535 0 :>>
+DEBUG (12): <<: radio 12 65535 0 :>>
+DEBUG (21): <<: radio 21 65535 0 :>>
+DEBUG (31): <<: radio 31 65535 0 :>>
+<<: clock 0 3100 0 :>>
+DEBUG (33): <<: radio 33 22 0 :>>
+DEBUG (13): <<: radio 13 65535 0 :>>
+DEBUG (32): <<: radio 32 65535 0 :>>
+DEBUG (23): <<: radio 23 65535 0 :>>
+DEBUG (21): <<: radio 21 65535 0 :>>
+DEBUG (12): <<: radio 12 65535 0 :>>
+DEBUG (32): <<: radio 32 65535 0 :>>
+DEBUG (33): <<: radio 33 65535 0 :>>
+DEBUG (23): <<: radio 23 65535 0 :>>
+<<: clock 0 3200 0 :>>
+DEBUG (33): <<: radio 33 65535 0 :>>
+<<: clock 0 3300 0 :>>
+<<: clock 0 3400 0 :>>
+<<: clock 0 3500 0 :>>
+<<: clock 0 3600 0 :>>
+DEBUG (11): <<: radio 11 1 0 :>>
+<<: clock 0 3700 0 :>>
+DEBUG (22): <<: radio 22 11 0 :>>
+DEBUG (1): <<: serial 1 0 0 :>>
+<<: clock 0 3800 0 :>>
+DEBUG (21): <<: radio 21 11 0 :>>
+DEBUG (12): <<: radio 12 11 0 :>>
+DEBUG (31): <<: radio 31 22 0 :>>
+DEBUG (13): <<: radio 13 22 0 :>>
+DEBUG (32): <<: radio 32 22 0 :>>
+DEBUG (23): <<: radio 23 22 0 :>>
+DEBUG (33): <<: radio 33 22 0 :>>
+<<: clock 0 3900 0 :>>
+<<: clock 0 4000 0 :>>
+<<: clock 0 4100 0 :>>
+<<: clock 0 4200 0 :>>
+<<: clock 0 4300 0 :>>
+<<: clock 0 4400 0 :>>
+DEBUG (11): <<: radio 11 1 0 :>>
+DEBUG (22): <<: radio 22 11 0 :>>
+<<: clock 0 4500 0 :>>
+DEBUG (1): <<: serial 1 0 0 :>>
+DEBUG (21): <<: radio 21 11 0 :>>
+DEBUG (12): <<: radio 12 11 0 :>>
+DEBUG (31): <<: radio 31 22 0 :>>
+DEBUG (13): <<: radio 13 22 0 :>>
+DEBUG (32): <<: radio 32 22 0 :>>
+DEBUG (23): <<: radio 23 22 0 :>>
+DEBUG (1): <<: serial 1 1 0 :>>
+<<: clock 0 4600 0 :>>
+DEBUG (33): <<: radio 33 22 0 :>>
+DEBUG (1): <<: serial 1 1 0 :>>
+DEBUG (1): <<: radio 1 65535 0 :>>
+<<: clock 0 4700 0 :>>
+DEBUG (11): <<: radio 11 65535 0 :>>
+DEBUG (22): <<: radio 22 65535 0 :>>
+DEBUG (31): <<: radio 31 65535 0 :>>
+DEBUG (13): <<: radio 13 65535 0 :>>
+DEBUG (21): <<: radio 21 65535 0 :>>
+DEBUG (12): <<: radio 12 65535 0 :>>
+<<: clock 0 4800 0 :>>
+DEBUG (32): <<: radio 32 65535 0 :>>
+DEBUG (1): <<: serial 1 0 0 :>>
+DEBUG (23): <<: radio 23 65535 0 :>>
+DEBUG (33): <<: radio 33 65535 0 :>>
+<<: clock 0 4900 0 :>>
+<<: clock 0 5000 0 :>>
+<<: clock 0 5100 0 :>>
+<<: clock 0 5200 0 :>>
+<<: clock 0 5300 0 :>>
+<<: clock 0 5400 0 :>>
+DEBUG (11): <<: radio 11 1 0 :>>
+DEBUG (22): <<: radio 22 11 0 :>>
+<<: clock 0 5500 0 :>>
+DEBUG (31): <<: radio 31 22 0 :>>
+DEBUG (13): <<: radio 13 22 0 :>>
+DEBUG (21): <<: radio 21 11 0 :>>
+DEBUG (12): <<: radio 12 11 0 :>>
+DEBUG (32): <<: radio 32 22 0 :>>
+DEBUG (1): <<: serial 1 0 0 :>>
+DEBUG (23): <<: radio 23 22 0 :>>
+DEBUG (33): <<: radio 33 22 0 :>>
+DEBUG (1): <<: serial 1 1 0 :>>
+<<: clock 0 5600 0 :>>
