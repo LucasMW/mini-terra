@@ -62,7 +62,6 @@ else
 				receivedMsg.type = 1;
 				receivedMsg.d16[1] = receivedMsg.source;
 				qPut(receivedMsg);
-				await Q_READY;
 				//emit SEND(receivedMsg);
 				//await SEND_DONE;
 		end
@@ -70,6 +69,7 @@ else
 		loop do
 			var myMsg qmsg;
 			await Q_READY;
+			loop do
 			if qSize() > 0 then
 				qGet(qmsg);
 				qmsg.target = pai;
@@ -79,10 +79,11 @@ else
 				emit SEND(qmsg);
 				await SEND_DONE;
 				emit LED0(OFF);
-				var ushort rng = random() % 100;
+				var ushort rng = random() % 500;
 				await (rng) ms;
 			else
 				break;
+			end
 			end
 			
 		end
