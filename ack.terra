@@ -53,7 +53,7 @@ else
 		msg.source = myID;
 		emit SEND(msg);
 		await SEND_DONE;
-
+	
 	par/or do
 		loop do
 				var myMsg receivedMsg;
@@ -62,7 +62,17 @@ else
 				receivedMsg.type = 1;
 				receivedMsg.d16[1] = receivedMsg.source;
 				emit SEND_ACK(receivedMsg);
-				await SEND_DONE_ACK;
+				var ubyte ack = await SEND_DONE_ACK;
+				loop do
+				if ack == TRUE then
+					break;
+				else
+					emit SEND_ACK(receivedMsg);
+				    ack = await SEND_DONE_ACK;
+					var ushort rng = random() % 3000;
+					await (rng) ms;
+				end
+			end
 		end
 	with	
 		var ubyte tempCont=0;
@@ -79,9 +89,7 @@ else
 			tempMsg.target = pai;
 			tempMsg.type = 1;
 			emit SEND_ACK(tempMsg);
-			await SEND_DONE_ACK;
-			var ushort rng = random() % msgRandMax;
-			await (rng) ms;
+			var ubyte ack = await SEND_DONE_ACK;
 		end
 	with
 		loop do
